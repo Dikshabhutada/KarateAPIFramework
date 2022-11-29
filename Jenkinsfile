@@ -1,6 +1,7 @@
 pipeline
 {
     agent any
+    parameters { choice(name: 'Environment', choices: ['stagging', 'prod', 'preprod'], description: 'Profile needs to be used while executing test') }
     stages{
         stage('CleanUP Stage')
         {
@@ -24,6 +25,7 @@ pipeline
              steps{
                 //define the sigle or multiple step
                 bat 'echo Restore Package'
+               
             }
             
         }
@@ -41,7 +43,8 @@ pipeline
              steps{
                 //define the sigle or multiple step
                 bat 'echo Test Execution Started'
-                bat 'mvn test'
+                //bat 'mvn test' // to executed karate test
+                bat 'mvn -P %Environment% test' // to executed different profile in karate framework using parametrized build
             }
             
         }
